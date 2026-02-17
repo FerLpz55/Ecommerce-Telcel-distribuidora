@@ -1,0 +1,27 @@
+.navbar { background: #002d6b; color: #fff; padding: 0 1rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.navbar-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 64px; gap: 1.5rem; }
+.navbar-brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: #fff; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; }
+.brand-icon { background: #00c853; color: #fff; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; }
+.navbar-menu { display: flex; gap: 0.25rem; flex: 1;
+  a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.9rem; transition: background 0.2s;
+    &:hover, &.active { background: rgba(255,255,255,0.12); color: #fff; }
+  }
+}
+.navbar-actions { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+.cart-btn { position: relative; color: #fff; display: flex; align-items: center; padding: 0.5rem; border-radius: 8px; transition: background 0.2s; &:hover { background: rgba(255,255,255,0.12); } }
+.cart-badge { position: absolute; top: -4px; right: -4px; background: #00c853; color: #fff; font-size: 0.7rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.user-menu { display: flex; align-items: center; gap: 0.75rem; }
+.user-name { font-size: 0.85rem; opacity: 0.9; }
+.btn-login { background: #00c853; color: #fff; text-decoration: none; padding: 0.45rem 1.2rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; transition: background 0.2s; &:hover { background: #00b848; } }
+.btn-logout { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 0.4rem 1rem; border-radius: 8px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; &:hover { background: rgba(255,255,255,0.1); } }
+.menu-toggle { display: none; background: none; border: none; padding: 0.5rem; cursor: pointer; }
+.hamburger { display: block; width: 24px; height: 2px; background: #fff; position: relative; transition: background 0.2s;
+  &::before, &::after { content: ''; position: absolute; width: 24px; height: 2px; background: #fff; left: 0; transition: transform 0.2s; }
+  &::before { top: -7px; } &::after { top: 7px; }
+  &.open { background: transparent; &::before { transform: rotate(45deg); top: 0; } &::after { transform: rotate(-45deg); top: 0; } }
+}
+@media (max-width: 768px) {
+  .menu-toggle { display: block; }
+  .navbar-menu { display: none; position: absolute; top: 64px; left: 0; right: 0; background: #002d6b; flex-direction: column; padding: 0.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); &.open { display: flex; } }
+  .user-name { display: none; }
+}

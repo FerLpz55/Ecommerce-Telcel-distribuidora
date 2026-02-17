@@ -1,0 +1,82 @@
+<div class="detail-page">
+  <div class="container">
+    @if (loading) {
+      <div class="loading">Cargando producto...</div>
+    } @else if (!product) {
+      <div class="not-found">
+        <h2>Producto no encontrado</h2>
+        <a routerLink="/tienda" class="btn-back">Volver a la tienda</a>
+      </div>
+    } @else {
+      <a routerLink="/tienda" class="breadcrumb">&larr; Volver a la tienda</a>
+
+      <div class="product-layout">
+        <div class="product-gallery">
+          <div class="main-image">
+            <img [src]="selectedImage || 'assets/no-image.png'" [alt]="product.nombre">
+          </div>
+          @if (product.imagenes && product.imagenes.length > 1) {
+            <div class="thumbnails">
+              @for (img of product.imagenes; track img.id_imagen) {
+                <img
+                  [src]="img.url_imagen"
+                  [alt]="product.nombre"
+                  [class.active]="selectedImage === img.url_imagen"
+                  (click)="selectImage(img.url_imagen)">
+              }
+            </div>
+          }
+        </div>
+
+        <div class="product-info">
+          <span class="product-brand">{{ product.marca }}</span>
+          <h1>{{ product.nombre }}</h1>
+          @if (product.color) {
+            <span class="product-color">Color: {{ product.color }}</span>
+          }
+          <p class="product-price">{{ product.precio | currency:'MXN':'symbol-narrow' }}</p>
+
+          <div class="stock-info">
+            @if (product.stock > 10) {
+              <span class="in-stock">En stock</span>
+            } @else if (product.stock > 0) {
+              <span class="low-stock">Solo {{ product.stock }} disponibles</span>
+            } @else {
+              <span class="out-of-stock">Agotado</span>
+            }
+          </div>
+
+          @if (product.stock > 0) {
+            <div class="quantity-selector">
+              <button (click)="decrementQty()" [disabled]="quantity <= 1">-</button>
+              <span>{{ quantity }}</span>
+              <button (click)="incrementQty()" [disabled]="quantity >= product.stock">+</button>
+            </div>
+
+            <button class="btn-add-cart" (click)="addToCart()">
+              @if (addedToCart) {
+                Agregado!
+              } @else {
+                Agregar al carrito
+              }
+            </button>
+          }
+
+          @if (product.descripcion) {
+            <div class="product-description">
+              <h3>Descripcion</h3>
+              <p>{{ product.descripcion }}</p>
+            </div>
+          }
+
+          @if (product.detalles_adicional) {
+            <div class="product-description">
+              <h3>Detalles adicionales</h3>
+              <p>{{ product.detalles_adicional }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

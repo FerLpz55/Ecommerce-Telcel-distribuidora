@@ -1,0 +1,63 @@
+<div class="shop-page">
+  <div class="container">
+    <h1 class="page-title">Tienda</h1>
+
+    <div class="shop-controls">
+      <div class="search-bar">
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="onSearch()"
+          placeholder="Buscar productos...">
+        <button (click)="onSearch()">Buscar</button>
+      </div>
+
+      <div class="category-filters">
+        <button
+          class="filter-chip"
+          [class.active]="selectedCategory === null"
+          (click)="filterByCategory(null)">
+          Todos
+        </button>
+        @for (cat of categories; track cat.id_categoria) {
+          <button
+            class="filter-chip"
+            [class.active]="selectedCategory === cat.id_categoria"
+            (click)="filterByCategory(cat.id_categoria)">
+            {{ cat.nombre }}
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (loading) {
+      <div class="loading">
+        <p>Cargando productos...</p>
+      </div>
+    } @else if (products.length === 0) {
+      <div class="empty-state">
+        <p>No se encontraron productos</p>
+      </div>
+    } @else {
+      <div class="products-grid">
+        @for (product of products; track product.id_producto) {
+          <app-product-card [product]="product" />
+        }
+      </div>
+
+      @if (totalPages > 1) {
+        <div class="pagination">
+          <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">&laquo; Anterior</button>
+          @for (page of pages; track page) {
+            <button
+              [class.active]="page === currentPage"
+              (click)="goToPage(page)">
+              {{ page }}
+            </button>
+          }
+          <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Siguiente &raquo;</button>
+        </div>
+      }
+    }
+  </div>
+</div>

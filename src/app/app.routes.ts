@@ -1,3 +1,21 @@
 import { Routes } from '@angular/router';
+import { Home } from './features/home/home';
+import { ProductList } from './features/shop/product-list/product-list';
+import { ProductDetail } from './features/shop/product-detail/product-detail';
+import { Cart } from './features/cart/cart';
+import { Checkout } from './features/checkout/checkout';
+import { Login } from './features/auth/login/login';
+import { Register } from './features/auth/register/register';
+import { authGuard } from './core/guards/auth.guard';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: Home },
+  { path: 'tienda', component: ProductList },
+  { path: 'producto/:id', component: ProductDetail },
+  { path: 'carrito', component: Cart },
+  { path: 'checkout', component: Checkout },
+  { path: 'login', component: Login },
+  { path: 'registro', component: Register },
+  { path: '**', redirectTo: 'home' }
+];
