@@ -13,7 +13,7 @@
       <div class="product-layout">
         <div class="product-gallery">
           <div class="main-image">
-            <img [src]="selectedImage || 'assets/no-image.png'" [alt]="product.nombre">
+            <img [src]="selectedImage || 'no-image.png'" [alt]="product.nombre">
           </div>
           @if (product.imagenes && product.imagenes.length > 1) {
             <div class="thumbnails">
