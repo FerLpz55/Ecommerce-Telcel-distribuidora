@@ -19,9 +19,9 @@
             <div class="thumbnails">
               @for (img of product.imagenes; track img.id_imagen) {
                 <img
-                  [src]="img.url_imagen"
+                  [src]="toImgUrl(img.url_imagen)"
                   [alt]="product.nombre"
-                  [class.active]="selectedImage === img.url_imagen"
+                  [class.active]="selectedImage === toImgUrl(img.url_imagen)"
                   (click)="selectImage(img.url_imagen)">
               }
             </div>

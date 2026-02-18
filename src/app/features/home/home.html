@@ -1,4 +1,4 @@
-<section class="hero" [style.background-image]="heroBanner ? 'url(' + heroBanner.imagen_url + ')' : ''" [style.background-size]="'cover'" [style.background-position]="'center'">
+<section class="hero" [style.background-image]="heroBanner ? 'url(/bannersImg/' + heroBanner.imagen_url + ')' : ''" [style.background-size]="'cover'" [style.background-position]="'center'">
   <div class="hero-overlay">
     <h1>{{ heroBanner?.titulo || 'Bienvenido a R y L Moviles' }}</h1>
     <p>{{ heroBanner?.descripcion || 'Tu distribuidor autorizado Telcel' }}</p>
@@ -12,6 +12,9 @@
     <div class="categories-grid">
       @for (cat of categories(); track cat.id_categoria) {
         <a routerLink="/tienda" [queryParams]="{categoria: cat.id_categoria}" class="category-card">
+          @if (cat.imagen) {
+            <img [src]="'/categoriasImg/' + cat.imagen" [alt]="cat.nombre" class="category-img">
+          }
           <span>{{ cat.nombre }}</span>
         </a>
       }

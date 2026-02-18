@@ -22,6 +22,12 @@ export class ProductDetail implements OnInit {
   loading = true;
   addedToCart = false;
 
+  toImgUrl(filename: string): string {
+    if (!filename) return 'no-image.png';
+    if (filename.startsWith('http')) return filename;
+    return '/productosImg/' + filename;
+  }
+
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
@@ -30,7 +36,7 @@ export class ProductDetail implements OnInit {
           this.loading = false;
           if (res.success) {
             this.product = res.producto;
-            this.selectedImage = res.producto.imagen_principal || '';
+            this.selectedImage = this.toImgUrl(res.producto.imagen_principal || '');
           }
         },
         error: () => this.loading = false
@@ -39,7 +45,7 @@ export class ProductDetail implements OnInit {
   }
 
   selectImage(url: string): void {
-    this.selectedImage = url;
+    this.selectedImage = this.toImgUrl(url);
   }
 
   decrementQty(): void {
@@ -57,7 +63,7 @@ export class ProductDetail implements OnInit {
       nombre: this.product.nombre,
       precio: this.product.precio,
       cantidad: this.quantity,
-      imagen: this.product.imagen_principal || '',
+      imagen: this.toImgUrl(this.product.imagen_principal || ''),
       stock: this.product.stock
     });
     this.addedToCart = true;
