@@ -1,0 +1,23 @@
+.hero { min-height: 400px; background: #002d6b center/cover no-repeat; position: relative; display: flex; align-items: center; justify-content: center; }
+.hero-overlay { text-align: center; color: #fff; padding: 2rem; background: rgba(0,0,0,0.4); border-radius: 12px;
+  h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  p { font-size: 1.2rem; margin-bottom: 1.5rem; opacity: 0.9; }
+}
+.btn-hero { display: inline-block; padding: 0.75rem 2rem; background: #00c853; color: #fff; border-radius: 8px; text-decoration: none; font-weight: 600; transition: background 0.2s;
+  &:hover { background: #00a844; }
+}
+.section { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+.section-title { font-size: 1.5rem; color: #333; margin-bottom: 1.25rem; text-align: center; }
+.categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; }
+.category-card { display: flex; align-items: center; justify-content: center; padding: 1.25rem; background: #f0f4ff; border-radius: 10px; text-decoration: none; color: #002d6b; font-weight: 600; transition: background 0.2s;
+  &:hover { background: #dde6f7; }
+}
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+.section-cta { text-align: center; margin-top: 1.5rem; }
+.btn-see-all { display: inline-block; padding: 0.6rem 1.5rem; border: 2px solid #002d6b; color: #002d6b; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.2s;
+  &:hover { background: #002d6b; color: #fff; }
+}
+@media (max-width: 600px) {
+  .hero-overlay h1 { font-size: 1.5rem; }
+  .hero-overlay p { font-size: 1rem; }
+}

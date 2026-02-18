@@ -1,5 +1,6 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, tap, catchError, of } from 'rxjs';
 import { ApiService } from './api';
 import { User, LoginRequest, RegisterRequest, AuthResponse } from '../models/user';
 
@@ -21,34 +22,38 @@ export class AuthService {
     this.checkSession();
   }
 
-  login(credentials: LoginRequest): void {
+  login(credentials: LoginRequest): Observable<AuthResponse> {
     this.loading.set(true);
-    this.api.post<AuthResponse>('login.php', credentials).subscribe({
-      next: (res) => {
+    return this.api.post<AuthResponse>('login.php', credentials).pipe(
+      tap((res) => {
         this.loading.set(false);
         if (res.success && res.user) {
           this.currentUser.set(res.user);
           this.permissions.set(res.permisos ?? []);
-          this.router.navigate([res.redirect ?? '/home']);
         }
-      },
-      error: () => this.loading.set(false)
-    });
+      }),
+      catchError((err) => {
+        this.loading.set(false);
+        throw err;
+      })
+    );
   }
 
-  register(data: RegisterRequest): void {
+  register(data: RegisterRequest): Observable<AuthResponse> {
     this.loading.set(true);
-    this.api.post<AuthResponse>('register.php', data).subscribe({
-      next: (res) => {
+    return this.api.post<AuthResponse>('register.php', data).pipe(
+      tap((res) => {
         this.loading.set(false);
         if (res.success && res.user) {
           this.currentUser.set(res.user);
           this.permissions.set(res.permisos ?? []);
-          this.router.navigate(['/home']);
         }
-      },
-      error: () => this.loading.set(false)
-    });
+      }),
+      catchError((err) => {
+        this.loading.set(false);
+        throw err;
+      })
+    );
   }
 
   logout(): void {
