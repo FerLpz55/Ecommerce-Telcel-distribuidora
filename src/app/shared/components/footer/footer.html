@@ -1,26 +1,39 @@
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-section">
-      <h3>Distribuidora R y L</h3>
-      <p>Tu distribuidor autorizado Telcel. Los mejores equipos y planes al mejor precio.</p>
-    </div>
-    <div class="footer-section">
-      <h4>Enlaces</h4>
-      <ul>
-        <li><a routerLink="/home">Inicio</a></li>
-        <li><a routerLink="/tienda">Tienda</a></li>
-        <li><a routerLink="/carrito">Carrito</a></li>
-      </ul>
-    </div>
-    <div class="footer-section">
-      <h4>Contacto</h4>
-      <ul>
-        <li>Tel: (xxx) xxx-xxxx</li>
-        <li>Email: contacto&#64;distribuidoraryl.com</li>
-      </ul>
+<footer>
+  <div class="footer-top-bar">
+    <div class="footer-content-wrapper">
+      <div class="footer-brand-info">
+        <img src="assets/Logo3.png" alt="R y L Moviles" class="footer-logo-ryl">
+        <span class="logo-text-footer">R y L Moviles</span>
+      </div>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/rl.moviles.2025" target="_blank" rel="noopener">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </div>
     </div>
   </div>
-  <div class="footer-bottom">
-    <p>&copy; {{ currentYear }} Distribuidora R y L. Todos los derechos reservados.</p>
+
+  <div class="footer-bottom-bar">
+    <div class="footer-content-wrapper">
+      <div class="footer-main-info">
+        <div class="footer-logo-telcel">
+          <img src="assets/telcel-logo.png" alt="Telcel Logo" class="telcel-img-footer">
+        </div>
+        <div class="footer-contact">
+          <h4>Contáctanos</h4>
+          <p>&#x1F4E7; rlmoviles.telcel&#64;gmail.com</p>
+          <p>&#x1F4DE; 756 127 7617</p>
+        </div>
+        <div class="footer-links-group">
+          <h4>Navegación</h4>
+          <a routerLink="/home">Inicio</a>
+          <a routerLink="/tienda">Tienda</a>
+          <a routerLink="/carrito">Carrito</a>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; {{ currentYear }} R y L Moviles. Todos los derechos reservados.</p>
+      </div>
+    </div>
   </div>
 </footer>

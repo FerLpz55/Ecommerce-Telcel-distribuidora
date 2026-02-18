@@ -33,6 +33,9 @@ export class ProductList implements OnInit {
       if (params['categoria']) {
         this.selectedCategory = +params['categoria'];
       }
+      if (params['buscar']) {
+        this.searchTerm = params['buscar'];
+      }
       this.loadProducts();
     });
   }
@@ -62,6 +65,13 @@ export class ProductList implements OnInit {
 
   filterByCategory(catId: number | null): void {
     this.selectedCategory = catId;
+    this.currentPage = 1;
+    this.loadProducts();
+  }
+
+  resetFilters(): void {
+    this.searchTerm = '';
+    this.selectedCategory = null;
     this.currentPage = 1;
     this.loadProducts();
   }

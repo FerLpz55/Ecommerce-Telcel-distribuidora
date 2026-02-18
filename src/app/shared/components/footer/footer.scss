@@ -1,13 +1,135 @@
-.footer { background: #1a1a2e; color: rgba(255,255,255,0.8); padding: 3rem 1rem 0; margin-top: auto; }
-.footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2rem; padding-bottom: 2rem; }
-.footer-section {
-  h3 { color: #fff; font-size: 1.2rem; margin-bottom: 0.75rem; }
-  h4 { color: #fff; font-size: 1rem; margin-bottom: 0.75rem; }
-  p { font-size: 0.9rem; line-height: 1.6; }
-  ul { list-style: none; padding: 0; margin: 0;
-    li { margin-bottom: 0.4rem; font-size: 0.9rem; }
-    a { color: rgba(255,255,255,0.7); text-decoration: none; &:hover { color: #00c853; } }
+footer {
+  background-color: transparent;
+  padding: 0;
+  margin-top: 40px;
+}
+
+.footer-content-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Barra superior azul */
+.footer-top-bar {
+  background-color: #0033A0;
+  color: white;
+  padding: 20px 0;
+
+  .footer-content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 }
-.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding: 1.25rem 0; text-align: center; font-size: 0.85rem; }
-@media (max-width: 768px) { .footer-container { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+.footer-brand-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo-ryl { height: 80px; width: auto; }
+
+.logo-text-footer {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin-left: 10px;
+}
+
+.social-icons {
+  a {
+    color: white;
+    font-size: 20px;
+    margin-left: 15px;
+    text-decoration: none;
+    transition: color 0.3s;
+
+    &:hover { color: #f5f2f0; }
+  }
+}
+
+/* Barra inferior blanca */
+.footer-bottom-bar {
+  background-color: white;
+  color: #333;
+  padding: 20px 0;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer-main-info {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  gap: 30px;
+  align-items: start;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+
+  h4 {
+    color: #0033A0;
+    font-size: 15px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+}
+
+.footer-logo-telcel { display: flex; align-items: center; }
+
+.telcel-img-footer { height: 150px; width: auto; }
+
+.footer-contact {
+  text-align: left;
+  p { font-size: 13px; margin: 4px 0; }
+}
+
+.footer-links-group {
+  text-align: left;
+  a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-size: 13px;
+    margin-bottom: 4px;
+    transition: 0.2s;
+
+    &:hover {
+      color: #0033A0;
+      text-decoration: underline;
+    }
+  }
+}
+
+.footer-copyright {
+  text-align: center;
+  margin-top: 12px;
+  p { font-size: 12px; color: #666; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .footer-content-wrapper { padding: 0 15px; }
+
+  .footer-top-bar .footer-content-wrapper {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .social-icons {
+    margin-top: 5px;
+    a { margin: 0 10px; }
+  }
+
+  .footer-bottom-bar { padding: 15px 0; }
+
+  .footer-main-info {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .footer-logo-telcel { justify-content: center; }
+  .footer-contact, .footer-links-group { text-align: center; }
+  .footer-copyright { margin-top: 10px; }
+}

@@ -1,117 +1,155 @@
-<div class="checkout-page">
-  <div class="container">
-    @if (orderSuccess) {
-      <div class="success-card">
-        <div class="success-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#00c853" stroke-width="2">
-            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-            <polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-        </div>
-        <h1>Pedido Realizado!</h1>
-        <p>Tu pedido #{{ orderId }} ha sido registrado exitosamente.</p>
-        <p class="sub-text">Metodo de pago: Transferencia bancaria. Nos comunicaremos contigo para coordinar el pago.</p>
-        @if (whatsappUrl) {
-          <a [href]="whatsappUrl" target="_blank" class="btn-whatsapp">Enviar por WhatsApp</a>
-        }
-        <a routerLink="/home" class="btn-home">Volver al inicio</a>
+<div class="checkout-container">
+  @if (orderSuccess) {
+    <div class="success-card">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
       </div>
-    } @else {
-      <h1 class="page-title">Checkout</h1>
+      <h1>¡Pedido Realizado!</h1>
+      <p>Tu pedido #{{ orderId }} ha sido registrado exitosamente.</p>
+      <p class="sub-text">Método de pago: Transferencia bancaria. Nos comunicaremos contigo para coordinar el pago.</p>
+      @if (whatsappUrl) {
+        <a [href]="whatsappUrl" target="_blank" class="btn-whatsapp">
+          <i class="fab fa-whatsapp"></i> Enviar por WhatsApp
+        </a>
+      }
+      <a routerLink="/home" class="btn-back"><i class="fas fa-home"></i> Volver al inicio</a>
+    </div>
+  } @else {
+    <!-- Progress -->
+    <div class="checkout-progress">
+      <div class="progress-step active">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Dirección</span>
+      </div>
+      <div class="progress-step">
+        <i class="fas fa-credit-card"></i>
+        <span>Pago</span>
+      </div>
+      <div class="progress-step">
+        <i class="fas fa-check"></i>
+        <span>Confirmación</span>
+      </div>
+    </div>
 
-      <div class="checkout-layout">
-        <form (ngSubmit)="onSubmit()" #checkoutForm="ngForm" class="checkout-form">
-          <h2>Datos de contacto</h2>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="nombre">Nombre</label>
-              <input type="text" id="nombre" name="nombre" [(ngModel)]="form.nombre" required>
+    <div class="checkout-content">
+      <!-- Formulario -->
+      <div class="checkout-form-section">
+        <h2><i class="fas fa-shipping-fast"></i> Datos de envío</h2>
+        <form (ngSubmit)="onSubmit()" #checkoutForm="ngForm">
+          <div class="form-section">
+            <h3>Datos de contacto</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" [(ngModel)]="form.nombre" required>
+              </div>
+              <div class="form-group">
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" name="apellidos" [(ngModel)]="form.apellidos" required>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="apellidos">Apellidos</label>
-              <input type="text" id="apellidos" name="apellidos" [(ngModel)]="form.apellidos" required>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" [(ngModel)]="form.email" required>
-            </div>
-            <div class="form-group">
-              <label for="telefono">Telefono</label>
-              <input type="tel" id="telefono" name="telefono" [(ngModel)]="form.telefono" required placeholder="10 digitos">
-            </div>
-          </div>
-
-          <h2>Direccion de envio</h2>
-
-          <div class="form-group">
-            <label for="calle">Calle y numero</label>
-            <input type="text" id="calle" name="calle" [(ngModel)]="form.calle" required>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="colonia">Colonia</label>
-              <input type="text" id="colonia" name="colonia" [(ngModel)]="form.colonia" required>
-            </div>
-            <div class="form-group">
-              <label for="cp">Codigo Postal</label>
-              <input type="text" id="cp" name="codigo_postal" [(ngModel)]="form.codigo_postal" required maxlength="5">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="ciudad">Ciudad</label>
-              <input type="text" id="ciudad" name="ciudad" [(ngModel)]="form.ciudad" required>
-            </div>
-            <div class="form-group">
-              <label for="estado">Estado</label>
-              <input type="text" id="estado" name="estado" [(ngModel)]="form.estado" required>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" [(ngModel)]="form.email" required>
+              </div>
+              <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" [(ngModel)]="form.telefono" required placeholder="10 dígitos">
+              </div>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="referencias">Referencias</label>
-            <textarea id="referencias" name="referencias" [(ngModel)]="form.referencias" rows="2" placeholder="Referencias del domicilio"></textarea>
+          <div class="form-section">
+            <h3>Dirección de envío</h3>
+            <div class="form-group">
+              <label for="calle">Calle y número</label>
+              <input type="text" id="calle" name="calle" [(ngModel)]="form.calle" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="colonia">Colonia</label>
+                <input type="text" id="colonia" name="colonia" [(ngModel)]="form.colonia" required>
+              </div>
+              <div class="form-group">
+                <label for="cp">Código Postal</label>
+                <input type="text" id="cp" name="codigo_postal" [(ngModel)]="form.codigo_postal" required maxlength="5">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ciudad">Ciudad</label>
+                <input type="text" id="ciudad" name="ciudad" [(ngModel)]="form.ciudad" required>
+              </div>
+              <div class="form-group">
+                <label for="estado">Estado</label>
+                <input type="text" id="estado" name="estado" [(ngModel)]="form.estado" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="referencias">Referencias</label>
+              <textarea id="referencias" name="referencias" [(ngModel)]="form.referencias" rows="2" placeholder="Referencias del domicilio"></textarea>
+            </div>
           </div>
 
-          <button type="submit" class="btn-submit" [disabled]="checkoutForm.invalid || loading">
-            @if (loading) {
-              Procesando pedido...
-            } @else {
-              Confirmar Pedido
-            }
-          </button>
+          <div class="form-section">
+            <h3>Método de pago</h3>
+            <div class="alert-info">
+              <i class="fas fa-info-circle"></i>
+              <div>
+                <strong>Transferencia bancaria</strong>
+                <p>Al confirmar tu pedido, te enviaremos los datos bancarios por WhatsApp para realizar la transferencia.</p>
+              </div>
+            </div>
+            <div class="whatsapp-notice">
+              <i class="fab fa-whatsapp"></i>
+              <p>Recibirás un mensaje de WhatsApp con los detalles de tu pedido y los datos para el pago.</p>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <a routerLink="/carrito" class="btn-back"><i class="fas fa-arrow-left"></i> Volver al carrito</a>
+            <button type="submit" class="btn-submit" [disabled]="checkoutForm.invalid || loading">
+              @if (loading) { <i class="fas fa-spinner fa-spin"></i> Procesando... }
+              @else { <i class="fas fa-check"></i> Confirmar Pedido }
+            </button>
+          </div>
         </form>
-
-        <div class="order-summary">
-          <h3>Resumen del pedido</h3>
-          @for (item of cartService.cartItems(); track item.id_producto) {
-            <div class="summary-item">
-              <span class="item-name">{{ item.nombre }} x{{ item.cantidad }}</span>
-              <span>{{ item.precio * item.cantidad | currency:'MXN':'symbol-narrow' }}</span>
-            </div>
-          }
-          <div class="summary-divider"></div>
-          <div class="summary-row">
-            <span>Subtotal</span>
-            <span>{{ cartService.subtotal() | currency:'MXN':'symbol-narrow' }}</span>
-          </div>
-          <div class="summary-row">
-            <span>Envio</span>
-            <span>{{ cartService.shipping() === 0 ? 'Gratis' : (cartService.shipping() | currency:'MXN':'symbol-narrow') }}</span>
-          </div>
-          <div class="summary-row total">
-            <span>Total</span>
-            <span>{{ cartService.total() | currency:'MXN':'symbol-narrow' }}</span>
-          </div>
-          <p class="payment-note">Metodo de pago: Transferencia bancaria</p>
-        </div>
       </div>
-    }
-  </div>
+
+      <!-- Resumen -->
+      <aside class="checkout-summary">
+        <div class="summary-card">
+          <h3>Resumen del pedido</h3>
+          <div class="summary-items">
+            @for (item of cartService.cartItems(); track item.id_producto) {
+              <div class="summary-item">
+                <img [src]="item.imagen || 'assets/no-image.png'" [alt]="item.nombre">
+                <div class="summary-item-info">
+                  <h4>{{ item.nombre }}</h4>
+                  <p>Cantidad: {{ item.cantidad }}</p>
+                </div>
+                <span class="summary-item-price">{{ item.precio * item.cantidad | currency:'MXN':'symbol-narrow' }}</span>
+              </div>
+            }
+          </div>
+          <div class="summary-totals">
+            <div class="summary-row">
+              <span>Subtotal</span>
+              <span>{{ cartService.subtotal() | currency:'MXN':'symbol-narrow' }}</span>
+            </div>
+            <div class="summary-row">
+              <span>Envío</span>
+              <span>{{ cartService.shipping() === 0 ? 'Gratis' : (cartService.shipping() | currency:'MXN':'symbol-narrow') }}</span>
+            </div>
+            <div class="summary-divider"></div>
+            <div class="summary-row summary-total">
+              <span>Total</span>
+              <span>{{ cartService.total() | currency:'MXN':'symbol-narrow' }}</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  }
 </div>

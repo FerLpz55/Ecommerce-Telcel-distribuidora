@@ -1,13 +1,13 @@
-<section class="hero" [style.background-image]="heroBanner ? 'url(' + heroBanner.imagen_url + ')' : ''">
+<section class="hero" [style.background-image]="heroBanner ? 'url(' + heroBanner.imagen_url + ')' : ''" [style.background-size]="'cover'" [style.background-position]="'center'">
   <div class="hero-overlay">
-    <h1>{{ heroBanner?.titulo || 'Bienvenido a Distribuidora R y L' }}</h1>
+    <h1>{{ heroBanner?.titulo || 'Bienvenido a R y L Moviles' }}</h1>
     <p>{{ heroBanner?.descripcion || 'Tu distribuidor autorizado Telcel' }}</p>
     <a routerLink="/tienda" class="btn-hero">Ver tienda</a>
   </div>
 </section>
 
 @if (categories().length > 0) {
-  <section class="section">
+  <section class="categories">
     <h2 class="section-title">Categorías</h2>
     <div class="categories-grid">
       @for (cat of categories(); track cat.id_categoria) {
@@ -20,7 +20,7 @@
 }
 
 @if (featuredProducts().length > 0) {
-  <section class="section">
+  <section class="products-section">
     <h2 class="section-title">Productos destacados</h2>
     <div class="products-grid">
       @for (product of featuredProducts(); track product.id_producto) {
@@ -28,7 +28,9 @@
       }
     </div>
     <div class="section-cta">
-      <a routerLink="/tienda" class="btn-see-all">Ver todos los productos</a>
+      <a routerLink="/tienda" class="btn-see-all">
+        <i class="fas fa-store"></i> Ver todos los productos
+      </a>
     </div>
   </section>
 }

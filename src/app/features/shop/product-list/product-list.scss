@@ -1,135 +1,240 @@
-.shop-page {
-  padding: 2rem 0;
-  min-height: calc(100vh - 64px - 200px);
-  background: #f5f7fa;
+/* LAYOUT PRINCIPAL */
+.catalog-page-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 30px;
+  max-width: 1400px;
+  margin: 40px auto;
+  padding: 0 20px;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+/* SIDEBAR DE FILTROS */
+.filters-sidebar {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0033A0;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 }
 
-.page-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin-bottom: 1.5rem;
+.filter-section {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-of-type { border-bottom: none; }
+
+  h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    i { color: #0033A0; font-size: 14px; }
+  }
 }
 
-.shop-controls {
-  margin-bottom: 2rem;
-}
-
-.search-bar {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-
+.search-input {
   input {
-    flex: 1;
-    padding: 0.7rem 1rem;
-    border: 1.5px solid #e0e0e0;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    background: #fff;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border 0.3s;
 
     &:focus {
       outline: none;
-      border-color: #002d6b;
+      border-color: #0033A0;
+      box-shadow: 0 0 5px rgba(0, 51, 160, 0.3);
     }
   }
+}
 
-  button {
-    padding: 0.7rem 1.5rem;
-    background: #002d6b;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
+.filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  cursor: pointer;
+
+  &:hover { background: #f8f9fa; }
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
     cursor: pointer;
-    transition: background 0.2s;
+    accent-color: #0033A0;
+  }
 
-    &:hover { background: #003d8f; }
+  label {
+    flex: 1;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
   }
 }
 
-.category-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.filter-chip {
-  padding: 0.4rem 1rem;
-  border: 1.5px solid #e0e0e0;
-  border-radius: 20px;
-  background: #fff;
-  font-size: 0.85rem;
+.btn-reset-filters {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  border: 2px solid #0033A0;
+  color: #0033A0;
+  border-radius: 10px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s;
 
   &:hover {
-    border-color: #002d6b;
-    color: #002d6b;
-  }
-
-  &.active {
-    background: #002d6b;
-    color: #fff;
-    border-color: #002d6b;
+    background: #0033A0;
+    color: white;
   }
 }
 
+/* ÁREA DE PRODUCTOS */
+.products-main-area {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.header-title-section {
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0033A0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+}
+
+.product-count {
+  font-size: 14px;
+  color: #666;
+}
+
+/* GRID DE PRODUCTOS */
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
 }
 
-.loading, .empty-state {
+/* ESTADOS */
+.loading-state, .no-products {
+  grid-column: 1 / -1;
   text-align: center;
-  padding: 4rem 0;
-  color: #888;
-  font-size: 1.1rem;
+  padding: 60px 20px;
+  color: #999;
+
+  i {
+    font-size: 48px;
+    color: #0033A0;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  p { font-size: 16px; color: #666; }
+  h3 { font-size: 22px; color: #333; margin: 15px 0; }
 }
 
+/* PAGINACIÓN */
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 0.35rem;
-  margin-top: 2rem;
+  gap: 8px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
 
   button {
-    padding: 0.5rem 0.85rem;
-    border: 1.5px solid #e0e0e0;
+    padding: 10px 16px;
+    border: 1px solid #e0e0e0;
+    background: white;
     border-radius: 8px;
-    background: #fff;
     cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.2s;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 
-    &:hover:not(:disabled) {
-      border-color: #002d6b;
-      color: #002d6b;
+    &:hover:not(:disabled):not(.active) {
+      border-color: #0033A0;
+      color: #0033A0;
     }
 
     &.active {
-      background: #002d6b;
-      color: #fff;
-      border-color: #002d6b;
+      background: #0033A0;
+      color: white;
+      border-color: #0033A0;
     }
 
     &:disabled {
-      opacity: 0.4;
+      opacity: 0.5;
       cursor: not-allowed;
     }
   }
 }
 
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .catalog-page-container { grid-template-columns: 1fr; }
+  .filters-sidebar { position: static; }
+}
+
 @media (max-width: 768px) {
+  .products-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
   }
 }
