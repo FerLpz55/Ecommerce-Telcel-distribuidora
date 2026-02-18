@@ -16,7 +16,7 @@ export class ProductCard {
   private router = inject(Router);
 
   get imageUrl(): string {
-    return this.product().imagen_principal || 'assets/no-image.png';
+    return this.product().imagen_principal || 'no-image.png';
   }
 
   addToCart(event: Event): void {

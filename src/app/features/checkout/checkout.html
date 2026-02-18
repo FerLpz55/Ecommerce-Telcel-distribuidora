@@ -124,7 +124,7 @@
           <div class="summary-items">
             @for (item of cartService.cartItems(); track item.id_producto) {
               <div class="summary-item">
-                <img [src]="item.imagen || 'assets/no-image.png'" [alt]="item.nombre">
+                <img [src]="item.imagen || 'no-image.png'" [alt]="item.nombre">
                 <div class="summary-item-info">
                   <h4>{{ item.nombre }}</h4>
                   <p>Cantidad: {{ item.cantidad }}</p>

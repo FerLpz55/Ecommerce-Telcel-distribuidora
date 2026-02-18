@@ -14,7 +14,7 @@
           @for (item of cartService.cartItems(); track item.id_producto) {
             <div class="cart-item">
               <div class="item-image">
-                <img [src]="item.imagen || 'assets/no-image.png'" [alt]="item.nombre">
+                <img [src]="item.imagen || 'no-image.png'" [alt]="item.nombre">
               </div>
               <div class="item-info">
                 <h3>{{ item.nombre }}</h3>
