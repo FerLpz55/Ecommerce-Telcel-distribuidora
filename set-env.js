@@ -35,10 +35,9 @@ async function setEnv() {
       process.exit(1);
     }
     console.warn('ADVERTENCIA: Las variables de entorno SUPABASE_URL y/o SUPABASE_KEY no están definidas.');
-    console.warn('Esto es normal en desarrollo local, pero es un error si ocurre durante el despliegue en Vercel.');
   }
-  if (supabaseKey && !supabaseKey.startsWith('eyJ')) {
-    console.warn('ADVERTENCIA: La clave de Supabase parece incompleta. Debe iniciar con "eyJ".');
+  if (supabaseKey && !supabaseKey.startsWith('eyJ') && !supabaseKey.startsWith('sb_publishable_')) {
+    console.warn('ADVERTENCIA: La clave de Supabase parece inválida. Debe iniciar con "eyJ" o "sb_publishable_".');
   }
   await writeFileAsync(targetPath, envConfigFile).catch(err => console.error(err));
   console.log(`Archivo de entorno generado en: ${targetPath}`);
