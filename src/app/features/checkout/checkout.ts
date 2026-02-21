@@ -34,7 +34,7 @@ export class Checkout implements OnInit {
 
   loading = false;
   orderSuccess = false;
-  orderId: number | null = null;
+  orderId: string | null = null;
   whatsappUrl: string | null = null;
 
   ngOnInit(): void {

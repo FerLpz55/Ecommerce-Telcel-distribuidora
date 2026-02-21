@@ -48,6 +48,6 @@ export interface CheckoutRequest {
 export interface OrderResponse {
   success: boolean;
   message: string;
-  id_pedido?: number;
+  id_pedido?: string;
   whatsapp_url?: string;
 }

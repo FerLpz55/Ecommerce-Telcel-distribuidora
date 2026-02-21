@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, catchError, finalize, from, map, throwError } from 'rxjs';
 import { User as SupabaseUser } from '@supabase/supabase-js';
 import { SupabaseAuthService } from './supabase-auth.service';
+import { SupabaseService } from './supabase.service';
 import { User, LoginRequest, RegisterRequest, AuthResponse } from '../models/user';
 
 @Injectable({ providedIn: 'root' })
@@ -22,6 +23,7 @@ export class AuthService {
 
   constructor(
     private supabaseAuth: SupabaseAuthService,
+    private supabaseService: SupabaseService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -67,40 +69,7 @@ export class AuthService {
 
   register(data: RegisterRequest): Observable<AuthResponse> {
     this.loading.set(true);
-    return from(
-      this.supabaseAuth.signUp({
-        email: data.correo,
-        password: data.contrasena,
-        options: {
-          data: {
-            nombre: data.nombre,
-            apellido_paterno: data.apellido_paterno,
-            apellido_materno: data.apellido_materno,
-            rol: 'cliente',
-          },
-        },
-      }),
-    ).pipe(
-      map(({ data: signUpData, error }) => {
-        if (error) {
-          throw this.createUiError(error.message || 'No se pudo completar el registro.');
-        }
-
-        const user = signUpData.user ? this.mapSupabaseUser(signUpData.user) : undefined;
-        if (user) {
-          this.currentUser.set(user);
-          this.permissions.set([]);
-        }
-
-        return {
-          success: true,
-          message: signUpData.session
-            ? 'Registro exitoso'
-            : 'Registro exitoso. Revisa tu correo para confirmar tu cuenta.',
-          user,
-          permisos: [],
-        };
-      }),
+    return from(this.registerWithProfile(data)).pipe(
       catchError((err: unknown) =>
         throwError(() => this.normalizeAuthError(err, 'Error al registrarse')),
       ),
@@ -132,6 +101,60 @@ export class AuthService {
 
   hasPermission(permiso: string): boolean {
     return this.permissions().includes(permiso);
+  }
+
+  private async registerWithProfile(data: RegisterRequest): Promise<AuthResponse> {
+    const { data: signUpData, error } = await this.supabaseAuth.signUp({
+      email: data.correo,
+      password: data.contrasena,
+      options: {
+        data: {
+          nombre: data.nombre,
+          apellido_paterno: data.apellido_paterno,
+          apellido_materno: data.apellido_materno,
+          rol: 'cliente',
+        },
+      },
+    });
+
+    if (error) {
+      throw this.createUiError(error.message || 'No se pudo completar el registro.');
+    }
+
+    if (signUpData.user) {
+      const supabase = this.supabaseService.getClient();
+      const fullName = `${data.nombre} ${data.apellido_paterno} ${data.apellido_materno}`.replace(/\s+/g, ' ').trim();
+
+      const { error: profileError } = await supabase.from('profiles').upsert(
+        {
+          id: signUpData.user.id,
+          full_name: fullName,
+          address: null,
+          phone: null,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'id' },
+      );
+
+      if (profileError) {
+        throw this.createUiError(`Usuario creado, pero no se pudo guardar profile: ${profileError.message}`);
+      }
+    }
+
+    const user = signUpData.user ? this.mapSupabaseUser(signUpData.user) : undefined;
+    if (user) {
+      this.currentUser.set(user);
+      this.permissions.set([]);
+    }
+
+    return {
+      success: true,
+      message: signUpData.session
+        ? 'Registro exitoso'
+        : 'Registro exitoso. Revisa tu correo para confirmar tu cuenta.',
+      user,
+      permisos: [],
+    };
   }
 
   private mapSupabaseUser(supabaseUser: SupabaseUser): User {
