@@ -104,9 +104,24 @@ export class AuthService {
   }
 
   private async registerWithProfile(data: RegisterRequest): Promise<AuthResponse> {
+    const correo = data.correo.trim().toLowerCase();
+    const contrasena = data.contrasena.trim();
+
+    if (!correo) {
+      throw this.createUiError('El correo es obligatorio.');
+    }
+
+    if (contrasena.length < 6) {
+      throw this.createUiError('La contraseña debe tener al menos 6 caracteres.');
+    }
+
+    if (contrasena !== data.confirmar_contrasena) {
+      throw this.createUiError('Las contraseñas no coinciden.');
+    }
+
     const { data: signUpData, error } = await this.supabaseAuth.signUp({
-      email: data.correo,
-      password: data.contrasena,
+      email: correo,
+      password: contrasena,
       options: {
         data: {
           nombre: data.nombre,
@@ -118,7 +133,7 @@ export class AuthService {
     });
 
     if (error) {
-      throw this.createUiError(error.message || 'No se pudo completar el registro.');
+      throw this.createUiError(this.mapSupabaseRegisterError(error.message));
     }
 
     if (signUpData.user) {
@@ -183,6 +198,26 @@ export class AuthService {
 
   private createUiError(message: string): { error: { message: string } } {
     return { error: { message } };
+  }
+
+  private mapSupabaseRegisterError(message?: string): string {
+    const raw = (message || '').toLowerCase();
+    if (raw.includes('user already registered')) {
+      return 'Ese correo ya está registrado. Inicia sesión o recupera tu contraseña.';
+    }
+    if (raw.includes('password') && raw.includes('at least')) {
+      return 'La contraseña debe tener al menos 6 caracteres.';
+    }
+    if (raw.includes('unable to validate email address') || raw.includes('invalid email')) {
+      return 'El correo electrónico no es válido.';
+    }
+    if (raw.includes('signup') && raw.includes('disabled')) {
+      return 'El registro está deshabilitado en Supabase (Auth > Providers > Email).';
+    }
+    if (raw.includes('captcha')) {
+      return 'El registro requiere captcha. Desactívalo o configura captcha en Supabase.';
+    }
+    return message || 'No se pudo completar el registro.';
   }
 
   private isUiError(value: unknown): value is { error: { message: string } } {
