@@ -142,7 +142,8 @@ export class AuthService {
       throw this.createUiError(this.mapSupabaseRegisterError(error.message));
     }
 
-    if (signUpData.user) {
+    const hasSession = Boolean(signUpData.session);
+    if (signUpData.user && hasSession) {
       const supabase = this.supabaseService.getClient();
       const fullName = `${data.nombre} ${data.apellido_paterno} ${data.apellido_materno}`.replace(/\s+/g, ' ').trim();
 
@@ -158,7 +159,7 @@ export class AuthService {
       );
 
       if (profileError) {
-        throw this.createUiError(`Usuario creado, pero no se pudo guardar profile: ${profileError.message}`);
+        console.warn(`No se pudo guardar profile en registro: ${profileError.message}`);
       }
     }
 
@@ -170,7 +171,7 @@ export class AuthService {
 
     return {
       success: true,
-      message: signUpData.session
+      message: hasSession
         ? 'Registro exitoso'
         : 'Registro exitoso. Revisa tu correo para confirmar tu cuenta.',
       user,
