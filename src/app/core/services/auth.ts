@@ -1,4 +1,5 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable, tap, catchError, of } from 'rxjs';
 import { ApiService } from './api';
@@ -18,8 +19,14 @@ export class AuthService {
   });
   readonly isLoading = this.loading.asReadonly();
 
-  constructor(private api: ApiService, private router: Router) {
-    this.checkSession();
+  constructor(
+    private api: ApiService, 
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.checkSession();
+    }
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {

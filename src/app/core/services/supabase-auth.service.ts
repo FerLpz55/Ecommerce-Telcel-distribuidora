@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class SupabaseAuthService {
   private supabase: SupabaseClient;
   private _session$ = new BehaviorSubject<Session | null>(null);
 

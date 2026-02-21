@@ -1,10 +1,10 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { AuthService } from './auth.service';
+import { SupabaseAuthService } from '../services/supabase-auth.service';
 import { from, switchMap } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService);
+  const authService = inject(SupabaseAuthService);
 
   // Convierte la promesa del token en un observable
   return from(authService.getToken()).pipe(

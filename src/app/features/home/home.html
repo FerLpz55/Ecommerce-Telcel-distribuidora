@@ -1,9 +1,39 @@
-<section class="hero" [style.background-image]="heroBanner ? 'url(/bannersImg/' + heroBanner.imagen_url + ')' : ''" [style.background-size]="'cover'" [style.background-position]="'center'">
-  <div class="hero-overlay">
-    <h1>{{ heroBanner?.titulo || 'Bienvenido a R y L Moviles' }}</h1>
-    <p>{{ heroBanner?.descripcion || 'Tu distribuidor autorizado Telcel' }}</p>
-    <a routerLink="/tienda" class="btn-hero">Ver tienda</a>
+<section class="hero-slider">
+  <div class="slider-container" [style.transform]="'translateX(-' + (currentBannerIndex() * 100) + '%)'">
+    @for (banner of banners(); track banner.id_banner; let i = $index) {
+      <div class="slide" [style.background-image]="'url(/bannersImg/' + banner.imagen_url + ')'">
+        <div class="hero-overlay">
+          <h1>{{ banner.titulo }}</h1>
+          <p>{{ banner.descripcion }}</p>
+          <a [routerLink]="banner.enlace" class="btn-hero">Ver tienda</a>
+        </div>
+      </div>
+    }
+    @if (banners().length === 0) {
+      <div class="slide placeholder">
+        <div class="hero-overlay">
+          <h1>Bienvenido a R y L Moviles</h1>
+          <p>Tu distribuidor autorizado Telcel</p>
+          <a routerLink="/tienda" class="btn-hero">Ver tienda</a>
+        </div>
+      </div>
+    }
   </div>
+
+  @if (banners().length > 1) {
+    <button class="slider-btn prev" (click)="prevBanner()">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="slider-btn next" (click)="nextBanner()">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+    
+    <div class="slider-dots">
+      @for (banner of banners(); track banner.id_banner; let i = $index) {
+        <span class="dot" [class.active]="currentBannerIndex() === i" (click)="setBanner(i)"></span>
+      }
+    </div>
+  }
 </section>
 
 @if (categories().length > 0) {

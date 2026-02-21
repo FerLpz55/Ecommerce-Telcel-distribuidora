@@ -8,12 +8,13 @@ const targetPath = './src/environments/environment.production.ts';
 
 // Las variables de entorno que Vercel nos dará.
 // En Vercel, estas variables deben estar configuradas.
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
+const supabaseUrl = process.env.SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_KEY || '';
 
 // El contenido que se escribirá en el archivo
 const envConfigFile = `export const environment = {
   production: true,
+  apiUrl: '/api',
   supabaseUrl: '${supabaseUrl}',
   supabaseKey: '${supabaseKey}',
 };
