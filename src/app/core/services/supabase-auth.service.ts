@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-import { AuthChangeEvent, Session, SupabaseClient, User } from '@supabase/supabase-js';
+import { Session, SupabaseClient, User } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -34,7 +34,7 @@ export class SupabaseAuthService {
   }
 
   // Registrar un nuevo usuario
-  async signUp(credentials: { email: string, password: string }) {
+  async signUp(credentials: { email: string; password: string; options?: { data?: Record<string, unknown> } }) {
     return this.supabase.auth.signUp(credentials);
   }
 
