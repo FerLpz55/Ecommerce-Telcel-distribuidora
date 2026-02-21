@@ -33,16 +33,22 @@ export class AuthService {
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
+    const correo = credentials.correo.trim().toLowerCase();
+    const contrasena = credentials.contrasena;
+    if (!correo || !contrasena) {
+      return throwError(() => this.createUiError('Correo y contraseña son obligatorios.'));
+    }
+
     this.loading.set(true);
     return from(
       this.supabaseAuth.login({
-        email: credentials.correo,
-        password: credentials.contrasena,
+        email: correo,
+        password: contrasena,
       }),
     ).pipe(
       map(({ data, error }) => {
         if (error) {
-          throw this.createUiError(error.message || 'Credenciales inválidas');
+          throw this.createUiError(this.mapSupabaseLoginError(error.message));
         }
 
         if (!data.user) {
@@ -218,6 +224,20 @@ export class AuthService {
       return 'El registro requiere captcha. Desactívalo o configura captcha en Supabase.';
     }
     return message || 'No se pudo completar el registro.';
+  }
+
+  private mapSupabaseLoginError(message?: string): string {
+    const raw = (message || '').toLowerCase();
+    if (raw.includes('invalid login credentials')) {
+      return 'Correo o contraseña incorrectos, o el correo aún no está confirmado.';
+    }
+    if (raw.includes('email not confirmed')) {
+      return 'Tu correo no está confirmado. Revisa tu bandeja de entrada.';
+    }
+    if (raw.includes('too many requests')) {
+      return 'Demasiados intentos. Espera unos minutos e intenta de nuevo.';
+    }
+    return message || 'No se pudo iniciar sesión.';
   }
 
   private isUiError(value: unknown): value is { error: { message: string } } {
