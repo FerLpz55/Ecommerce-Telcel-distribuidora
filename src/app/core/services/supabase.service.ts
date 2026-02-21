@@ -23,7 +23,14 @@ export class SupabaseService {
       console.warn('Supabase env incompleto en build/runtime. Usando fallback interno.');
     }
 
-    this.supabase = createClient(supabaseUrl, supabaseKey);
+    this.supabase = createClient(supabaseUrl, supabaseKey, {
+      global: {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+      },
+    });
   }
 
   getClient(): SupabaseClient {
