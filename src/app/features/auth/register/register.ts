@@ -18,6 +18,7 @@ export class Register {
   apellido_paterno = '';
   apellido_materno = '';
   correo = '';
+  telefono = '';
   contrasena = '';
   confirmar_contrasena = '';
   error = signal('');
@@ -36,6 +37,7 @@ export class Register {
       apellido_paterno: this.apellido_paterno,
       apellido_materno: this.apellido_materno,
       correo: this.correo,
+      telefono: this.telefono,
       contrasena: this.contrasena,
       confirmar_contrasena: this.confirmar_contrasena
     }).subscribe({

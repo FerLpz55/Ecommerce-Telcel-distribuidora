@@ -53,6 +53,17 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+.alert-success {
+  background: #198754;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 14px;
+  animation: slideDown 0.3s ease;
+}
+
 .input-group {
   margin-bottom: 15px;
 
@@ -80,6 +91,20 @@
       border-color: #0033A0;
       box-shadow: 0 0 5px rgba(0, 51, 160, 0.3);
     }
+  }
+}
+
+.forgot-row {
+  text-align: right;
+  margin: -5px 0 12px;
+
+  a {
+    color: #0033A0;
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover { text-decoration: underline; }
   }
 }
 

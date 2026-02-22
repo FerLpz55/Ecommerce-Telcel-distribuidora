@@ -25,6 +25,19 @@
         <input id="correo" type="email" [(ngModel)]="correo" name="correo" required email placeholder="tu@email.com">
       </div>
       <div class="input-group">
+        <label for="telefono">Celular</label>
+        <input
+          id="telefono"
+          type="tel"
+          [(ngModel)]="telefono"
+          name="telefono"
+          required
+          minlength="10"
+          placeholder="Ej. 5512345678 o +525512345678"
+        >
+        <small>Se usa para recuperacion por SMS.</small>
+      </div>
+      <div class="input-group">
         <label for="contrasena">Contraseña</label>
         <input id="contrasena" type="password" [(ngModel)]="contrasena" name="contrasena" required minlength="6" placeholder="Mínimo 6 caracteres">
         <small>Mínimo 6 caracteres</small>

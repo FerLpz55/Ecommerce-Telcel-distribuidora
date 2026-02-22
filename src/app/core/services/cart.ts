@@ -1,15 +1,20 @@
 import { Injectable, signal, computed, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { CartItem, CartSummary } from '../models/cart-item';
+import { SupabaseAuthService } from './supabase-auth.service';
 
-const CART_KEY = 'telcel_cart';
+const LEGACY_CART_KEY = 'telcel_cart';
+const GUEST_CART_KEY = 'telcel_cart_guest';
+const USER_CART_PREFIX = 'telcel_cart_user_';
 const FREE_SHIPPING_THRESHOLD = 1000;
 const SHIPPING_COST = 150;
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private platformId = inject(PLATFORM_ID);
+  private supabaseAuth = inject(SupabaseAuthService);
   private items = signal<CartItem[]>([]);
+  private storageKey = GUEST_CART_KEY;
 
   readonly cartItems = this.items.asReadonly();
   readonly itemCount = computed(() => this.items().reduce((sum, i) => sum + i.cantidad, 0));
@@ -25,7 +30,17 @@ export class CartService {
     cantidad_total: this.itemCount()
   }));
 
-  constructor() { this.loadFromStorage(); }
+  constructor() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.migrateLegacyStorage();
+    this.storageKey = this.keyForUser(this.supabaseAuth.currentUser?.id ?? null);
+    this.items.set(this.readFromStorage(this.storageKey));
+
+    this.supabaseAuth.session$.subscribe({
+      next: (session) => this.handleSessionChange(session?.user?.id ?? null),
+    });
+  }
 
   addItem(item: CartItem): void {
     const current = this.items();
@@ -56,15 +71,80 @@ export class CartService {
   }
 
   private saveToStorage(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem(CART_KEY, JSON.stringify(this.items()));
+    if (!isPlatformBrowser(this.platformId)) return;
+    localStorage.setItem(this.storageKey, JSON.stringify(this.items()));
+  }
+
+  private readFromStorage(key: string): CartItem[] {
+    if (!isPlatformBrowser(this.platformId)) return [];
+    const stored = localStorage.getItem(key);
+    if (!stored) return [];
+
+    try {
+      const parsed = JSON.parse(stored);
+      return Array.isArray(parsed) ? parsed as CartItem[] : [];
+    } catch {
+      return [];
     }
   }
 
-  private loadFromStorage(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const stored = localStorage.getItem(CART_KEY);
-      if (stored) { this.items.set(JSON.parse(stored)); }
+  private handleSessionChange(userId: string | null): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const nextKey = this.keyForUser(userId);
+    if (nextKey === this.storageKey) return;
+
+    const previousKey = this.storageKey;
+    const previousItems = this.readFromStorage(previousKey);
+    const nextItems = this.readFromStorage(nextKey);
+
+    if (previousKey === GUEST_CART_KEY && !!userId) {
+      const merged = this.mergeItems(nextItems, previousItems);
+      this.storageKey = nextKey;
+      this.items.set(merged);
+      localStorage.setItem(nextKey, JSON.stringify(merged));
+      localStorage.removeItem(GUEST_CART_KEY);
+      return;
     }
+
+    this.storageKey = nextKey;
+    this.items.set(nextItems);
+  }
+
+  private keyForUser(userId: string | null): string {
+    return userId ? `${USER_CART_PREFIX}${userId}` : GUEST_CART_KEY;
+  }
+
+  private migrateLegacyStorage(): void {
+    const legacy = localStorage.getItem(LEGACY_CART_KEY);
+    if (!legacy || localStorage.getItem(GUEST_CART_KEY)) return;
+
+    localStorage.setItem(GUEST_CART_KEY, legacy);
+    localStorage.removeItem(LEGACY_CART_KEY);
+  }
+
+  private mergeItems(base: CartItem[], extra: CartItem[]): CartItem[] {
+    const merged = new Map<number, CartItem>();
+
+    for (const item of base) {
+      merged.set(item.id_producto, { ...item });
+    }
+
+    for (const item of extra) {
+      const current = merged.get(item.id_producto);
+      if (!current) {
+        merged.set(item.id_producto, { ...item });
+        continue;
+      }
+
+      const maxStock = Math.max(current.stock, item.stock);
+      merged.set(item.id_producto, {
+        ...current,
+        stock: maxStock,
+        cantidad: Math.min(current.cantidad + item.cantidad, maxStock),
+      });
+    }
+
+    return Array.from(merged.values());
   }
 }

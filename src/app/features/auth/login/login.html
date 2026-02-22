@@ -2,6 +2,9 @@
   <div class="auth-card">
     <h2>Iniciar sesión</h2>
     <p class="auth-subtitle">Ingresa tus datos para continuar</p>
+    @if (success()) {
+      <div class="alert-success">{{ success() }}</div>
+    }
     @if (error()) {
       <div class="alert-error">{{ error() }}</div>
     }
@@ -13,6 +16,9 @@
       <div class="input-group">
         <label for="contrasena">Contraseña</label>
         <input id="contrasena" type="password" [(ngModel)]="contrasena" name="contrasena" required minlength="6" placeholder="Tu contraseña">
+      </div>
+      <div class="forgot-row">
+        <a routerLink="/recuperar-contrasena">¿Olvidaste tu contraseña?</a>
       </div>
       <button type="submit" class="btn-login" [disabled]="loginForm.invalid || loading()">
         @if (loading()) { Ingresando... } @else { Ingresar }

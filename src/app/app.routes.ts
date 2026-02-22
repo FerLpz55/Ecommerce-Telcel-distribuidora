@@ -7,6 +7,8 @@ import { Checkout } from './features/checkout/checkout';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
 import { Location } from './features/location/location';
+import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
+import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -19,5 +21,7 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'registro', component: Register },
   { path: 'ubicacion', component: Location },
+  { path: 'recuperar-contrasena', component: ForgotPassword },
+  { path: 'restablecer-contrasena', component: ResetPassword },
   { path: '**', redirectTo: 'home' }
 ];

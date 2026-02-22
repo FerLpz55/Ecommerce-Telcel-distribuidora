@@ -20,6 +20,7 @@ export interface RegisterRequest {
   apellido_paterno: string;
   apellido_materno: string;
   correo: string;
+  telefono: string;
   contrasena: string;
   confirmar_contrasena: string;
 }

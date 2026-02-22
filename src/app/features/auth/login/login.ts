@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth';
 
 @Component({
@@ -13,14 +13,23 @@ import { AuthService } from '../../../core/services/auth';
 export class Login {
   private auth = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   correo = '';
   contrasena = '';
   error = signal('');
+  success = signal('');
   loading = signal(false);
+
+  constructor() {
+    if (this.route.snapshot.queryParamMap.get('reset') === 'ok') {
+      this.success.set('Contraseña restablecida. Inicia sesión con tu nueva contraseña.');
+    }
+  }
 
   onSubmit(): void {
     this.error.set('');
+    this.success.set('');
     this.loading.set(true);
     this.auth.login({ correo: this.correo, contrasena: this.contrasena }).subscribe({
       next: () => {
