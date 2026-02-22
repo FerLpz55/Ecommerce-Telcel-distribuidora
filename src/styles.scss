@@ -21,6 +21,9 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Leaflet map styles: import from node_modules without tilde */
+@import "leaflet/dist/leaflet.css";
+
 html { scroll-behavior: smooth; }
 
 body {

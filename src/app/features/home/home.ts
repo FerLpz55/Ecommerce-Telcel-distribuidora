@@ -12,14 +12,14 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterLink, ProductCard, CommonModule],
   templateUrl: './home.html',
-  styleUrl: './home.scss',
+  styleUrls: ['./home.scss'],
 })
 export class Home implements OnInit, OnDestroy {
   private productService = inject(ProductService);
   banners = signal<Banner[]>([]);
   featuredProducts = signal<Product[]>([]);
   categories = signal<Category[]>([]);
-  
+
   currentBannerIndex = signal(0);
   private sliderInterval: any;
 

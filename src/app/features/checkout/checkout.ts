@@ -9,9 +9,10 @@ import { CheckoutRequest } from '../../core/models/order';
 
 @Component({
   selector: 'app-checkout',
+  standalone: true,
   imports: [FormsModule, CurrencyPipe, RouterLink],
   templateUrl: './checkout.html',
-  styleUrl: './checkout.scss',
+  styleUrls: ['./checkout.scss'],
 })
 export class Checkout implements OnInit {
   cartService = inject(CartService);

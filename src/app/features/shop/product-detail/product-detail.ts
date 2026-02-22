@@ -7,9 +7,10 @@ import { Product } from '../../../core/models/product';
 
 @Component({
   selector: 'app-product-detail',
+  standalone: true,
   imports: [CurrencyPipe, RouterLink],
   templateUrl: './product-detail.html',
-  styleUrl: './product-detail.scss',
+  styleUrls: ['./product-detail.scss'],
 })
 export class ProductDetail implements OnInit {
   private route = inject(ActivatedRoute);

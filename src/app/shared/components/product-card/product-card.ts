@@ -6,9 +6,10 @@ import { CartService } from '../../../core/services/cart';
 
 @Component({
   selector: 'app-product-card',
+  standalone: true,
   imports: [CurrencyPipe],
   templateUrl: './product-card.html',
-  styleUrl: './product-card.scss',
+  styleUrls: ['./product-card.scss'],
 })
 export class ProductCard {
   product = input.required<Product>();

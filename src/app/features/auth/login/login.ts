@@ -5,9 +5,10 @@ import { AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   imports: [FormsModule, RouterLink],
   templateUrl: './login.html',
-  styleUrl: './login.scss',
+  styleUrls: ['./login.scss'],
 })
 export class Login {
   private auth = inject(AuthService);

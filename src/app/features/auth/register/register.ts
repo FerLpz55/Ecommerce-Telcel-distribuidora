@@ -5,9 +5,10 @@ import { AuthService } from '../../../core/services/auth';
 
 @Component({
   selector: 'app-register',
+  standalone: true,
   imports: [FormsModule, RouterLink],
   templateUrl: './register.html',
-  styleUrl: './register.scss',
+  styleUrls: ['./register.scss'],
 })
 export class Register {
   private auth = inject(AuthService);

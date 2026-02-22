@@ -8,9 +8,10 @@ import { Category } from '../../../core/models/category';
 
 @Component({
   selector: 'app-navbar',
+  standalone: true,
   imports: [RouterLink],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.scss',
+  styleUrls: ['./navbar.scss'],
 })
 export class Navbar implements OnInit {
   auth = inject(AuthService);

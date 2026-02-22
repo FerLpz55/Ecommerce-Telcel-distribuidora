@@ -17,6 +17,7 @@ export class ProductList implements OnInit {
   private route = inject(ActivatedRoute);
 
   products: Product[] = [];
+  displayedProducts: Product[] = [];
   categories: Category[] = [];
   searchTerm = '';
   selectedCategory: number | null = null;
@@ -44,7 +45,6 @@ export class ProductList implements OnInit {
     this.loading = true;
     this.productService.getProducts({
       pagina: this.currentPage,
-      buscar: this.searchTerm || undefined,
       categoria: this.selectedCategory || undefined
     }).subscribe({
       next: (res) => {
@@ -52,10 +52,24 @@ export class ProductList implements OnInit {
         if (res.success) {
           this.products = res.productos;
           this.totalPages = res.total_paginas;
+          this.applySearchFilter();
         }
       },
       error: () => this.loading = false
     });
+  }
+
+  // Filtro de búsqueda flexible (case-insensitive, búsqueda parcial)
+  private applySearchFilter(): void {
+    if (!this.searchTerm.trim()) {
+      this.displayedProducts = this.products;
+    } else {
+      const searchLower = this.searchTerm.toLowerCase();
+      this.displayedProducts = this.products.filter(product =>
+        product.nombre.toLowerCase().includes(searchLower) ||
+        (product.descripcion && product.descripcion.toLowerCase().includes(searchLower))
+      );
+    }
   }
 
   onSearch(): void {
@@ -84,5 +98,9 @@ export class ProductList implements OnInit {
 
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  get filteredProductCount(): number {
+    return this.displayedProducts.length;
   }
 }

@@ -6,6 +6,7 @@ import { Cart } from './features/cart/cart';
 import { Checkout } from './features/checkout/checkout';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
+import { Location } from './features/location/location';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: 'checkout', component: Checkout },
   { path: 'login', component: Login },
   { path: 'registro', component: Register },
+  { path: 'ubicacion', component: Location },
   { path: '**', redirectTo: 'home' }
 ];
